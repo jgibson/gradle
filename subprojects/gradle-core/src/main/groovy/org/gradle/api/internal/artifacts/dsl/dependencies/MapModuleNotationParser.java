@@ -18,6 +18,7 @@ package org.gradle.api.internal.artifacts.dsl.dependencies;
 import org.gradle.api.IllegalDependencyNotation;
 import org.gradle.api.artifacts.Dependency;
 import org.gradle.api.artifacts.ExternalDependency;
+import org.gradle.api.artifacts.ExternalModuleDependency;
 import org.gradle.api.internal.ClassGenerator;
 import org.gradle.util.ConfigureUtil;
 
@@ -45,6 +46,9 @@ class MapModuleNotationParser implements IDependencyImplementationFactory {
         ModuleFactoryHelper.addExplicitArtifactsIfDefined(dependency, getAndRemove(args, "ext"), getAndRemove(args,
                 "classifier"));
         ConfigureUtil.configureByMap(args, dependency);
+        if((version != null) && version.endsWith("SNAPSHOT") && (dependency instanceof ExternalModuleDependency)) {
+            ((ExternalModuleDependency) dependency).setChanging(true);
+        }
         return type.cast(dependency);
     }
 

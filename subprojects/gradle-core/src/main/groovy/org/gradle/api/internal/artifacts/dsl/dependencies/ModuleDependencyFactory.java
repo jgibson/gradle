@@ -57,6 +57,9 @@ public class ModuleDependencyFactory implements IDependencyImplementationFactory
                 parsedNotation.getVersion());
         ModuleFactoryHelper.addExplicitArtifactsIfDefined(moduleDependency, parsedNotation.getArtifactType(),
                 parsedNotation.getClassifier());
+        if((moduleDependency.getVersion() != null) && moduleDependency.getVersion().endsWith("SNAPSHOT")) {
+            moduleDependency.setChanging(true);
+        }
         return moduleDependency;
     }
 
