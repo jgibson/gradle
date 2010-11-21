@@ -31,6 +31,10 @@ import java.util.Date;
  * @author Hans Dockter
  */
 public class GradleIBiblioResolver extends IBiblioResolver {
+    public GradleIBiblioResolver() {
+        super.setCheckmodified(true);
+    }
+
     public static final CacheTimeoutStrategy NEVER = new CacheTimeoutStrategy() {
         public boolean isCacheTimedOut(long lastResolvedTime) {
             return false;
