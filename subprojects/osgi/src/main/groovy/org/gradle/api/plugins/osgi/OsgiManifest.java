@@ -195,4 +195,24 @@ public interface OsgiManifest extends org.gradle.api.java.archives.Manifest {
      * @param classpath The classpath elements
      */
     void setClasspath(FileCollection classpath);
+
+    /**
+     * Get additional properties for the underlying {@code Analyzer}.
+     *
+     * @param properties the properties to set.
+     * @see #properties(java.util.Map)
+     * @see aQute.lib.osgi.Analyzer
+     */
+    Map<String, String> getProperties();
+
+    /**
+     * Set arbitrary properties for the underlying {@code Analyzer}. These values are superceded by the named properties
+     * like {@link #getVersion()} or {@link #getVendor()}. Note that some named properties are given default values, like
+     * {@link #getName()} or {@link #getSymbolicName()}. To take those values from this properties object the named
+     * properties with default values must be set to {@code null} explicitly.
+     *
+     * @param properties the properties to set.
+     * @see aQute.lib.osgi.Analyzer
+     */
+    OsgiManifest properties(Map<String, String> map);
 }

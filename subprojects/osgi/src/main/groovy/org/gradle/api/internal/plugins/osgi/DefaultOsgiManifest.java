@@ -50,6 +50,8 @@ public class DefaultOsgiManifest extends DefaultManifest implements OsgiManifest
 
     private Map<String, List<String>> instructions = new HashMap<String, List<String>>();
 
+    private Map<String, String> properties = null;
+
     private FileCollection classpath;
 
     public DefaultOsgiManifest(FileResolver fileResolver) {
@@ -80,6 +82,12 @@ public class DefaultOsgiManifest extends DefaultManifest implements OsgiManifest
         for (String instructionName : instructions.keySet()) {
             analyzer.setProperty(instructionName, createPropertyStringFromList(instructionValue(instructionName)));
         }
+        final Map<String, String> props = getProperties();
+        if(props != null) {
+            for(final Map.Entry<String, String> ent : props.entrySet()) {
+                analyzer.setProperty(ent.getKey(), ent.getValue());
+            }
+        }
         setProperty(analyzer, Analyzer.BUNDLE_VERSION, getVersion());
         setProperty(analyzer, Analyzer.BUNDLE_SYMBOLICNAME, getSymbolicName());
         setProperty(analyzer, Analyzer.BUNDLE_NAME, getName());
@@ -89,6 +97,15 @@ public class DefaultOsgiManifest extends DefaultManifest implements OsgiManifest
         setProperty(analyzer, Analyzer.BUNDLE_DOCURL, getDocURL());
         analyzer.setJar(getClassesDir());
         analyzer.setClasspath(getClasspath().getFiles().toArray(new File[getClasspath().getFiles().size()]));
+    }
+
+    public DefaultOsgiManifest properties(Map<String, String> properties) {
+        this.properties = properties;
+        return this;
+    }
+
+    public Map<String, String> getProperties() {
+        return this.properties;
     }
 
     private void setProperty(Analyzer analyzer, String key, String value) {
